@@ -40,17 +40,19 @@ public class TrimSqlNode implements SqlNode {
     this.suffixesToOverride = suffixesToOverride;
   }
 
-  @Override
-  public boolean apply(DynamicContext context) {
+  public DynamicContext apply(DynamicContext context) {
     FilteredDynamicContext filteredDynamicContext = new FilteredDynamicContext(context);
-    boolean result = contents.apply(filteredDynamicContext);
+    DynamicContext result = contents.fire(filteredDynamicContext);
     filteredDynamicContext.applyAll();
     return result;
   }
 
   @Override
-  public boolean fire(DynamicContext context) {
-    return false;
+  public DynamicContext fire(DynamicContext context) {
+    FilteredDynamicContext filteredDynamicContext = new FilteredDynamicContext(context);
+    DynamicContext result = contents.fire(filteredDynamicContext);
+    filteredDynamicContext.applyAll();
+    return result;
   }
 
   private static List<String> parseOverrides(String overrides) {

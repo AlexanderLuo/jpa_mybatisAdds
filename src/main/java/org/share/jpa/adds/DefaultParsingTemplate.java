@@ -106,7 +106,7 @@ public class DefaultParsingTemplate implements ParsingTemplate{
         nodeHandlerMap.put("where", new WhereHandler());
         nodeHandlerMap.put("set", new SetHandler());
 //        nodeHandlerMap.put("foreach", new ForEachHandler());
-        nodeHandlerMap.put("choose", new ChooseHandler());
+//        nodeHandlerMap.put("choose", new ChooseHandler());
         nodeHandlerMap.put("when", new IfHandler());
         nodeHandlerMap.put("otherwise", new OtherwiseHandler());
 //        nodeHandlerMap.put("bind", new BindHandler());
@@ -227,44 +227,44 @@ public class DefaultParsingTemplate implements ParsingTemplate{
         }
     }
 
-    private class ChooseHandler implements NodeHandler {
-        public ChooseHandler() {
-            // Prevent Synthetic Access
-        }
-
-        @Override
-        public void handleNode(XNode nodeToHandle, List<SqlNode> targetContents) {
-            List<SqlNode> whenSqlNodes = new ArrayList<>();
-            List<SqlNode> otherwiseSqlNodes = new ArrayList<>();
-            handleWhenOtherwiseNodes(nodeToHandle, whenSqlNodes, otherwiseSqlNodes);
-            SqlNode defaultSqlNode = getDefaultSqlNode(otherwiseSqlNodes);
-            ChooseSqlNode chooseSqlNode = new ChooseSqlNode(whenSqlNodes, defaultSqlNode);
-            targetContents.add(chooseSqlNode);
-        }
-
-        private void handleWhenOtherwiseNodes(XNode chooseSqlNode, List<SqlNode> ifSqlNodes, List<SqlNode> defaultSqlNodes) {
-            List<XNode> children = chooseSqlNode.getChildren();
-            for (XNode child : children) {
-                String nodeName = child.getNode().getNodeName();
-                NodeHandler handler = nodeHandlerMap.get(nodeName);
-                if (handler instanceof IfHandler) {
-                    handler.handleNode(child, ifSqlNodes);
-                } else if (handler instanceof OtherwiseHandler) {
-                    handler.handleNode(child, defaultSqlNodes);
-                }
-            }
-        }
-
-        private SqlNode getDefaultSqlNode(List<SqlNode> defaultSqlNodes) {
-            SqlNode defaultSqlNode = null;
-            if (defaultSqlNodes.size() == 1) {
-                defaultSqlNode = defaultSqlNodes.get(0);
-            } else if (defaultSqlNodes.size() > 1) {
-                throw new RuntimeException("Too many default (otherwise) elements in choose statement.");
-            }
-            return defaultSqlNode;
-        }
-    }
+//    private class ChooseHandler implements NodeHandler {
+//        public ChooseHandler() {
+//            // Prevent Synthetic Access
+//        }
+//
+//        @Override
+//        public void handleNode(XNode nodeToHandle, List<SqlNode> targetContents) {
+//            List<SqlNode> whenSqlNodes = new ArrayList<>();
+//            List<SqlNode> otherwiseSqlNodes = new ArrayList<>();
+//            handleWhenOtherwiseNodes(nodeToHandle, whenSqlNodes, otherwiseSqlNodes);
+//            SqlNode defaultSqlNode = getDefaultSqlNode(otherwiseSqlNodes);
+//            ChooseSqlNode chooseSqlNode = new ChooseSqlNode(whenSqlNodes, defaultSqlNode);
+//            targetContents.add(chooseSqlNode);
+//        }
+//
+//        private void handleWhenOtherwiseNodes(XNode chooseSqlNode, List<SqlNode> ifSqlNodes, List<SqlNode> defaultSqlNodes) {
+//            List<XNode> children = chooseSqlNode.getChildren();
+//            for (XNode child : children) {
+//                String nodeName = child.getNode().getNodeName();
+//                NodeHandler handler = nodeHandlerMap.get(nodeName);
+//                if (handler instanceof IfHandler) {
+//                    handler.handleNode(child, ifSqlNodes);
+//                } else if (handler instanceof OtherwiseHandler) {
+//                    handler.handleNode(child, defaultSqlNodes);
+//                }
+//            }
+//        }
+//
+//        private SqlNode getDefaultSqlNode(List<SqlNode> defaultSqlNodes) {
+//            SqlNode defaultSqlNode = null;
+//            if (defaultSqlNodes.size() == 1) {
+//                defaultSqlNode = defaultSqlNodes.get(0);
+//            } else if (defaultSqlNodes.size() > 1) {
+//                throw new RuntimeException("Too many default (otherwise) elements in choose statement.");
+//            }
+//            return defaultSqlNode;
+//        }
+//    }
 
 
 }

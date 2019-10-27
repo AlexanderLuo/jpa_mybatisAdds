@@ -41,17 +41,15 @@ public class TextSqlNode implements SqlNode {
   }
 
 
-  @Override
-  public boolean apply(DynamicContext context) {
-    GenericTokenParser parser = createParser(new BindingTokenParser(context, injectionFilter));
-    context.appendSql(parser.parse(text));
-    return true;
-  }
+
 
   @Override
-  public boolean fire(DynamicContext context) {
-    return false;
+  public DynamicContext fire(DynamicContext context) {
+    GenericTokenParser parser = createParser(new BindingTokenParser(context, injectionFilter));
+    context.appendSql(parser.parse(text));
+    return context;
   }
+
 
 
   private GenericTokenParser createParser(TokenHandler handler) {
@@ -82,6 +80,7 @@ public class TextSqlNode implements SqlNode {
       Object value = OgnlCache.getValue(content, context.getBindings());
 
       String srtValue = value == null ? "" : String.valueOf(value); // issue #274 return "" instead of "null"
+
       checkInjection(srtValue);
       return srtValue;
     }

@@ -23,7 +23,13 @@ import org.share.jpa.adds.scripting.ognl.ExpressionEvaluator;
 public class IfSqlNode implements SqlNode {
   private final ExpressionEvaluator evaluator;
   private final String test;
+
+  /**
+   * 里面的深度 节点
+   */
   private final SqlNode contents;
+
+
 
   public IfSqlNode(SqlNode contents, String test) {
     this.test = test;
@@ -31,23 +37,14 @@ public class IfSqlNode implements SqlNode {
     this.evaluator = new ExpressionEvaluator();
   }
 
-  @Override
-  public boolean apply(DynamicContext context) {
-    if (evaluator.evaluateBoolean(test, context.getBindings())) {
-      contents.apply(context);
-      return true;
-    }
-    return false;
-  }
 
 
   @Override
-  public boolean fire(DynamicContext context) {
+  public DynamicContext fire(DynamicContext context) {
     if (evaluator.evaluateBoolean(test, context.getBindings())) {
-      contents.apply(context);
-      return true;
+      contents.fire(context);
     }
-    return false;
+    return context;
   }
 
 }

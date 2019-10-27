@@ -19,10 +19,8 @@ package org.share.jpa.adds.scripting;
  * @author Clinton Begin
  */
 public interface SqlNode {
-  boolean apply(DynamicContext context);
 
-
-  boolean fire(DynamicContext context);
+  DynamicContext fire(DynamicContext context);
 
 
 }

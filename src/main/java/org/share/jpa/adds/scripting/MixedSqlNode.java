@@ -28,27 +28,25 @@ public class MixedSqlNode implements SqlNode {
     this.contents = contents;
   }
 
-  @Override
-  public boolean apply(DynamicContext context) {
-    contents.forEach(node -> node.apply(context));
-    return true;
+
+
+
+  public void fire0(DynamicContext context) {
+    contents.forEach(node -> node.fire(context));
   }
 
 
 
+
   @Override
-  public boolean fire(DynamicContext context) {
-    contents.forEach(node -> node.apply(context));
-    return true;
-  }
-
-
-  public DynamicContext fire(Object parameterObject) {
-    DynamicContext context  = new DynamicContext(parameterObject);
-    fire(context);
+  public DynamicContext fire(DynamicContext context) {
+    fire0(context);
     return context;
   }
 
-
+  public DynamicContext fire(Object parameterObject) {
+    DynamicContext context  = new DynamicContext(parameterObject);
+    return fire(context);
+  }
 
 }
