@@ -48,6 +48,11 @@ public class TrimSqlNode implements SqlNode {
     return result;
   }
 
+  @Override
+  public boolean fire(DynamicContext context) {
+    return false;
+  }
+
   private static List<String> parseOverrides(String overrides) {
     if (overrides != null) {
       final StringTokenizer parser = new StringTokenizer(overrides, "|", false);

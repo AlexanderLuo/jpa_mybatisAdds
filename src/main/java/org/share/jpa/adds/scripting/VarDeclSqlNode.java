@@ -37,4 +37,9 @@ public class VarDeclSqlNode implements SqlNode {
     return true;
   }
 
+  @Override
+  public boolean fire(DynamicContext context) {
+    return false;
+  }
+
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+
+<mapper namespace="org.share.jpa.adds.MapperInterface">
+
+
+    <select id="testIf" resultType="com.po.MyUser" parameterType="com.po.MyUser">
+        select * from user where 1=1
+        <if test="id == '123' ">
+            And name = ${name}
+        </if>
+
+    </select>
+
+
+    <select id="testWhere" resultType="com.po.MyUser" parameterType="com.po.MyUser">
+        select * from user where 1=1
+        <if test="id == '123' ">
+            And name = ${name}
+        </if>
+    </select>
+
+
+
+
+    <select id="selectUserByIf2" resultType="com.po.MyUser" parameterType="com.po.MyUser">
+        select * from user where 1=1
+        <if test="uname!=null and uname!=''">
+            and uname like concat('%',#{uname},'%')
+        </if >
+        <if test="usex !=null and usex !=''">
+            and usex=#{usex}
+        </if >
+    </select>
+
+
+</mapper>

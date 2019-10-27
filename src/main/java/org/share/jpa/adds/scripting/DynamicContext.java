@@ -1,29 +1,41 @@
 package org.share.jpa.adds.scripting;
 
-import org.share.reflection.meta.MetaObject;
+import ognl.OgnlContext;
+import ognl.OgnlRuntime;
+import ognl.PropertyAccessor;
+import org.share.reflection.api.ObjectOperator;
+import org.share.reflection.api.ReflectApi;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
 public class DynamicContext {
+    static {
+        OgnlRuntime.setPropertyAccessor(ContextMap.class, new ContextAccessor());
+    }
+
     public static final String PARAMETER_OBJECT_KEY = "_parameter";
 
     private final StringJoiner sqlBuilder = new StringJoiner(" ");
     private final ContextMap bindings;
+    private int uniqueNumber = 0;   // 用于解析 循环时 生成序列id
 
 
-    public DynamicContext(MetaObject parameterMetaObject){
-        bindings  = new ContextMap(parameterMetaObject);
+    public DynamicContext(Object parameterMetaObject){
+        ObjectOperator objectOperator = ReflectApi.forObject(parameterMetaObject);
+        bindings  = new ContextMap(objectOperator);
         bindings.put(PARAMETER_OBJECT_KEY, parameterMetaObject);
     }
 
 
     public Map<String,Object> getBindings(){return  this.bindings;}
-
     public void bind(String name, Object value) {
         bindings.put(name, value);
     }
+
+
+
 
     public void appendSql(String sql) {
         sqlBuilder.add(sql);
@@ -35,11 +47,14 @@ public class DynamicContext {
 
 
 
+    /**
+     * 对象的静态代理 用于  一致性的 set get 方案实现
+     */
     static class ContextMap extends HashMap<String, Object> {
-        private final MetaObject parameterMetaObject;
+        private final ObjectOperator objectOperator;
 
-        public ContextMap(MetaObject parameterMetaObject) {
-            this.parameterMetaObject = parameterMetaObject;
+        public ContextMap(ObjectOperator objectOperator) {
+            this.objectOperator = objectOperator;
         }
 
         @Override
@@ -49,12 +64,48 @@ public class DynamicContext {
                 return super.get(strKey);
             }
 
-            if (parameterMetaObject == null) {
+            if (objectOperator == null) {
                 return null;
             }
 
-            return parameterMetaObject.getValue(strKey);
+            return objectOperator.getValue(strKey);
 
+        }
+    }
+
+    static class ContextAccessor implements PropertyAccessor {
+
+        @Override
+        public Object getProperty(Map context, Object target, Object name) {
+            Map map = (Map) target;
+
+            Object result = map.get(name);
+            if (map.containsKey(name) || result != null) {
+                return result;
+            }
+
+            Object parameterObject = map.get(PARAMETER_OBJECT_KEY);
+            if (parameterObject instanceof Map) {
+                return ((Map)parameterObject).get(name);
+            }
+
+            return null;
+        }
+
+        @Override
+        public void setProperty(Map context, Object target, Object name, Object value) {
+            Map<Object, Object> map = (Map<Object, Object>) target;
+            map.put(name, value);
+        }
+
+        @Override
+        public String getSourceAccessor(OgnlContext arg0, Object arg1, Object arg2) {
+            return null;
+        }
+
+        @Override
+        public String getSourceSetter(OgnlContext arg0, Object arg1, Object arg2) {
+            return null;
         }
     }
 

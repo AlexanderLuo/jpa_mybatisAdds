@@ -42,4 +42,9 @@ public class ChooseSqlNode implements SqlNode {
     }
     return false;
   }
+
+  @Override
+  public boolean fire(DynamicContext context) {
+    return false;
+  }
 }

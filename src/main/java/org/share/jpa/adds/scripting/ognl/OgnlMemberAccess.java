@@ -16,7 +16,7 @@
 package org.share.jpa.adds.scripting.ognl;
 
 import ognl.MemberAccess;
-import org.apache.ibatis.reflection.Reflector;
+import org.share.reflection.Reflector;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;

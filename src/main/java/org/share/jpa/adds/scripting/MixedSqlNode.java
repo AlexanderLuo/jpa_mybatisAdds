@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class MixedSqlNode implements SqlNode {
   private final List<SqlNode> contents;
-  public boolean isDynamic;
 
 
   public MixedSqlNode(List<SqlNode> contents) {
@@ -34,5 +33,22 @@ public class MixedSqlNode implements SqlNode {
     contents.forEach(node -> node.apply(context));
     return true;
   }
+
+
+
+  @Override
+  public boolean fire(DynamicContext context) {
+    contents.forEach(node -> node.apply(context));
+    return true;
+  }
+
+
+  public DynamicContext fire(Object parameterObject) {
+    DynamicContext context  = new DynamicContext(parameterObject);
+    fire(context);
+    return context;
+  }
+
+
 
 }

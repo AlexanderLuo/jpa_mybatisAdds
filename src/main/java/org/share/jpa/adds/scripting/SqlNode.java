@@ -20,4 +20,9 @@ package org.share.jpa.adds.scripting;
  */
 public interface SqlNode {
   boolean apply(DynamicContext context);
+
+
+  boolean fire(DynamicContext context);
+
+
 }

@@ -31,4 +31,9 @@ public class StaticTextSqlNode implements SqlNode {
     return true;
   }
 
+  @Override
+  public boolean fire(DynamicContext context) {
+    return false;
+  }
+
 }

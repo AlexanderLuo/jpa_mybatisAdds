@@ -48,6 +48,10 @@ public class TextSqlNode implements SqlNode {
     return true;
   }
 
+  @Override
+  public boolean fire(DynamicContext context) {
+    return false;
+  }
 
 
   private GenericTokenParser createParser(TokenHandler handler) {

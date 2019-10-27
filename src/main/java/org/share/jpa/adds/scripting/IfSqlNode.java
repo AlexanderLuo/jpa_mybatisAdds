@@ -40,4 +40,14 @@ public class IfSqlNode implements SqlNode {
     return false;
   }
 
+
+  @Override
+  public boolean fire(DynamicContext context) {
+    if (evaluator.evaluateBoolean(test, context.getBindings())) {
+      contents.apply(context);
+      return true;
+    }
+    return false;
+  }
+
 }
