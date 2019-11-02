@@ -1,0 +1,5 @@
+如果需要 通过enable 标签
+
+可以 import 一个 mark bean
+
+然后starter  @condition on bean 实现控制

@@ -1,0 +1,12 @@
+基于 jpa factory 重写 模版方法
+
+
+    JpaRepositoryFactory   #getQueryLookupStrategy
+
+
+    植入原来的方案的静态代理   进行特定的hook if 分支
+
+
+
+基于 factory bean 机制  加载
+    一个 自定的 jpa factory
