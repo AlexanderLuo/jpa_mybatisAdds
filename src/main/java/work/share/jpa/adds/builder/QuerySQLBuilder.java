@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 
 
 /**
- * @version V1.0, 2019-10-29
  * @author <a href="http://www.luohao.work">Alexander Lo</a>
+ * @version V1.0, 2019-10-29
  * @code Sql语句生成的时候一些包装
  */
 public class QuerySQLBuilder {
@@ -31,6 +31,7 @@ public class QuerySQLBuilder {
 
     /**
      * 这里 给原始的query 添加 对应的 transformer
+     *
      * @param query
      * @param clazz
      * @param <C>
@@ -44,7 +45,7 @@ public class QuerySQLBuilder {
         } else if (Number.class.isAssignableFrom(clazz)
                 || clazz.isPrimitive()
                 || String.class.isAssignableFrom(clazz) ||
-                    Date.class.isAssignableFrom(clazz)) {
+                Date.class.isAssignableFrom(clazz)) {
             transformer = transformerCache.computeIfAbsent(clazz, SmartTransformer::new);
         } else {
             transformer = transformerCache.computeIfAbsent(clazz, BeanTransformerAdapter::new);
@@ -61,11 +62,8 @@ public class QuerySQLBuilder {
 //    }
 
 
-
-
-
     private static boolean canClean(String orderByPart) {
-        return orderByPart != null && (!orderByPart.contains(")")  ||
+        return orderByPart != null && (!orderByPart.contains(")") ||
                 StringUtils.countOccurrencesOf(orderByPart, ")") == StringUtils.countOccurrencesOf(orderByPart, "("));
     }
 
@@ -152,10 +150,11 @@ public class QuerySQLBuilder {
 
     /********************************************************************************************************************
      *  Count wrapper
-    ********************************************************************************************************************/
+     ********************************************************************************************************************/
     public static String toCountQuery(String query) {
         return wrapCountQuery(cleanOrderBy(query));
     }
+
     private static String wrapCountQuery(String query) {
         return "select count(*) from (" + query + ") as ctmp";
     }

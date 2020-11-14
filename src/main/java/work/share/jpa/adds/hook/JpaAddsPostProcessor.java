@@ -10,19 +10,19 @@ import org.springframework.data.repository.core.support.RepositoryProxyPostProce
 
 
 /**
- * @version V1.0, 2019-10-29
  * @author <a href="http://www.luohao.work">Alexander Lo</a>
+ * @version V1.0, 2019-10-29
  * @code 后处理器 用于方法追踪
  */
 public class JpaAddsPostProcessor implements RepositoryProxyPostProcessor {
 
 
-    static class MapperMethodLogger implements MethodInterceptor{
+    static class MapperMethodLogger implements MethodInterceptor {
         private static final Logger logger = LoggerFactory.getLogger(MapperMethodLogger.class);
 
         @Override
         public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-            logger.info("[jpa-mybatis-adds ---]  ---" +methodInvocation.getMethod().getName());
+            logger.info("[jpa-mybatis-adds ---]  ---" + methodInvocation.getMethod().getName());
             return methodInvocation.proceed();
         }
     }

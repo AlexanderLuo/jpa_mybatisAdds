@@ -19,38 +19,35 @@ public class DefaultParsingTemplate implements ParsingTemplate {
 
     private ResourceLoader resourceLoader;
 
-    public DefaultParsingTemplate(ResourceLoader resourceLoader){
+    public DefaultParsingTemplate(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
     @Override
-    public  void parse(Resource resource) throws IOException, ClassNotFoundException {
+    public void parse(Resource resource) throws IOException, ClassNotFoundException {
 
         InputStream inputStream = resource.getInputStream();
         XPathParser parser = new XPathParser(inputStream, false, null, null);
         XNode root = parser.evalNode("/mapper");
         inputStream.close();
         if (StringUtils.isEmpty(root.getStringAttribute("namespace")))
-            throw new RuntimeException(resource.getFilename() +" no  namespace");
+            throw new RuntimeException(resource.getFilename() + " no  namespace");
 
 
-        Class<?>  mapperInterface = Objects.requireNonNull(this.resourceLoader.getClassLoader()).loadClass(root.getStringAttribute("namespace"));
+        Class<?> mapperInterface = Objects.requireNonNull(this.resourceLoader.getClassLoader()).loadClass(root.getStringAttribute("namespace"));
 
 
         List<XNode> sqls = root.evalNodes("select|insert|update|delete");
 
 
-        for (XNode sql : sqls){
+        for (XNode sql : sqls) {
             String methodName = sql.getStringAttribute("id");
             MixedSqlNode mixedSqlNode = doParse(sql);
-            AddsContext.addMapperSQLNode(mapperInterface,methodName,mixedSqlNode);
+            AddsContext.addMapperSQLNode(mapperInterface, methodName, mixedSqlNode);
 
         }
 
     }
-
-
-
 
 
     public MixedSqlNode doParse(XNode sqlNode) {
@@ -77,13 +74,7 @@ public class DefaultParsingTemplate implements ParsingTemplate {
     }
 
 
-
-
-
-
-
-
-    public DefaultParsingTemplate(){
+    public DefaultParsingTemplate() {
         nodeHandlerMap.put("if", new IfHandler());
         nodeHandlerMap.put("trim", new TrimHandler());
         nodeHandlerMap.put("where", new WhereHandler());
@@ -94,11 +85,6 @@ public class DefaultParsingTemplate implements ParsingTemplate {
         nodeHandlerMap.put("otherwise", new OtherwiseHandler());
 //        nodeHandlerMap.put("bind", new BindHandler());
     }
-
-
-
-
-
 
 
     private interface NodeHandler {
@@ -157,7 +143,7 @@ public class DefaultParsingTemplate implements ParsingTemplate {
         @Override
         public void handleNode(XNode nodeToHandle, List<SqlNode> targetContents) {
             MixedSqlNode mixedSqlNode = doParse(nodeToHandle);
-            SetSqlNode set = new SetSqlNode( mixedSqlNode);
+            SetSqlNode set = new SetSqlNode(mixedSqlNode);
             targetContents.add(set);
         }
     }

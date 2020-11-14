@@ -7,14 +7,13 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class JpaAddsAutoConfigurationStarter   {
+public class JpaAddsAutoConfigurationStarter {
     private static final Logger logger = LoggerFactory.getLogger(JpaAddsAutoConfigurationStarter.class);
 
 
-    public JpaAddsAutoConfigurationStarter(){
+    public JpaAddsAutoConfigurationStarter() {
         logger.info("********   【JPA ADDS MAPPER ACTIVE】   ********");
     }
-
 
 
 }

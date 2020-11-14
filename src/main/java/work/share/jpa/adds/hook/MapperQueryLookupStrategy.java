@@ -17,8 +17,8 @@ import javax.persistence.EntityManager;
 import java.lang.reflect.Method;
 
 /**
- * @version V1.0, 2019-10-29
  * @author <a href="http://www.luohao.work">Alexander Lo</a>
+ * @version V1.0, 2019-10-29
  * @code hook
  */
 public class MapperQueryLookupStrategy implements QueryLookupStrategy {
@@ -49,11 +49,11 @@ public class MapperQueryLookupStrategy implements QueryLookupStrategy {
                                         NamedQueries namedQueries) {
 
         Class<?> mapperInterface = metadata.getRepositoryInterface();
-        if (AddsContext.containsSQLNode(mapperInterface,method.getName())){
+        if (AddsContext.containsSQLNode(mapperInterface, method.getName())) {
             return new MapperQuery(new JpaQueryMethod(method, metadata, factory, extractor),
                     entityManager,
                     AddsContext.getMapper(mapperInterface).get(method.getName()));
-        }else {
+        } else {
             return jpaQueryLookupStrategy.resolveQuery(method, metadata, factory, namedQueries);
         }
 

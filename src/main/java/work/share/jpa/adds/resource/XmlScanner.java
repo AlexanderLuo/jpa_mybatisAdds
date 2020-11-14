@@ -9,10 +9,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.io.IOException;
 
 
-
 /**
- * @version V1.0, 2019-10-29
  * @author <a href="http://www.luohao.work">Alexander Lo</a>
+ * @version V1.0, 2019-10-29
  * @code 加载Mapper
  */
 public class XmlScanner {
@@ -20,7 +19,7 @@ public class XmlScanner {
     private ResourceLoader resourceLoader;
     private String basePackage = "classpath*:META-INF/**/*Mapper.xml";
 
-    public XmlScanner(ResourceLoader resourceLoader){
+    public XmlScanner(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
@@ -30,7 +29,7 @@ public class XmlScanner {
             PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver(resourceLoader);
             Resource[] resources = resourcePatternResolver.getResources(this.basePackage);
             handler(resources);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("XmlScanner scan error");
         }
@@ -40,10 +39,9 @@ public class XmlScanner {
 
     protected void handler(Resource[] resources) throws IOException, ClassNotFoundException {
         ParsingTemplate parsingTemplate = new DefaultParsingTemplate(this.resourceLoader);
-        for (Resource resource: resources)
+        for (Resource resource : resources)
             parsingTemplate.parse(resource);
     }
-
 
 
 }

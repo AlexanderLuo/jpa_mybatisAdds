@@ -22,29 +22,29 @@ public class DynamicContext {
     private int uniqueNumber = 0;   // 用于解析 循环时 生成序列id
 
 
-    public DynamicContext(Object parameterMetaObject){
+    public DynamicContext(Object parameterMetaObject) {
         ObjectReflector objectOperator = ReflectApi.forObject(parameterMetaObject);
-        bindings  = new ContextMap(objectOperator);
+        bindings = new ContextMap(objectOperator);
         bindings.put(PARAMETER_OBJECT_KEY, parameterMetaObject);
     }
 
 
-    public Map<String,Object> getBindings(){return  this.bindings;}
+    public Map<String, Object> getBindings() {
+        return this.bindings;
+    }
+
     public void bind(String name, Object value) {
         bindings.put(name, value);
     }
 
 
-
-
     public void appendSql(String sql) {
         sqlBuilder.add(sql);
     }
+
     public String getSql() {
         return sqlBuilder.toString().trim();
     }
-
-
 
 
     /**
@@ -86,7 +86,7 @@ public class DynamicContext {
 
             Object parameterObject = map.get(PARAMETER_OBJECT_KEY);
             if (parameterObject instanceof Map) {
-                return ((Map)parameterObject).get(name);
+                return ((Map) parameterObject).get(name);
             }
 
             return null;

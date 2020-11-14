@@ -13,8 +13,8 @@ import javax.persistence.EntityManager;
 import java.util.Optional;
 
 /**
- * @version V1.0, 2019-10-29
  * @author <a href="http://www.luohao.work">Alexander Lo</a>
+ * @version V1.0, 2019-10-29
  * @code 重写生成 query 的方法 注入自定义的生成器
  */
 public class ExtensionJpaRepositoryFactory extends JpaRepositoryFactory {
@@ -39,10 +39,9 @@ public class ExtensionJpaRepositoryFactory extends JpaRepositoryFactory {
     }
 
 
-
     /********************************************************************************************************************
      *  Hook 点
-    ********************************************************************************************************************/
+     ********************************************************************************************************************/
     @Override
     protected Optional<QueryLookupStrategy> getQueryLookupStrategy(@Nullable QueryLookupStrategy.Key key,
                                                                    QueryMethodEvaluationContextProvider evaluationContextProvider) {
@@ -50,7 +49,6 @@ public class ExtensionJpaRepositoryFactory extends JpaRepositoryFactory {
         logger.info("[---Jpa---Adds---##]			ExtensionJpaRepositoryFactory#getQueryLookupStrategy");
         return Optional.of(MapperQueryLookupStrategy.create(entityManager, key, extractor, evaluationContextProvider));
     }
-
 
 
 }

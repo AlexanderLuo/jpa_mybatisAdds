@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @version V1.0, 2019-10-29
  * @author <a href="http://www.luohao.work">Alexander Lo</a>
- * @code  最终的sql生成器  接入mapper的动态解析方案
+ * @version V1.0, 2019-10-29
+ * @code 最终的sql生成器  接入mapper的动态解析方案
  */
 public class MapperQuery extends AbstractJpaQuery {
 
@@ -41,7 +41,7 @@ public class MapperQuery extends AbstractJpaQuery {
     }
 
     MapperQuery(JpaQueryMethod method, EntityManager em, MixedSqlNode mixedSqlNode) {
-        this(method,em);
+        this(method, em);
         this.mixedSqlNode = mixedSqlNode;
     }
 
@@ -57,7 +57,7 @@ public class MapperQuery extends AbstractJpaQuery {
                 .applySorting(nativeQuery, accessor.getSort(), QueryUtils.detectAlias(nativeQuery));
 
 //        Query query = bind(createJpaQuery0(sortedQueryString), values);
-        Query query =  createJpaQuery0(sortedQueryString);
+        Query query = createJpaQuery0(sortedQueryString);
 
         if (parameters.hasPageableParameter()) {
             Pageable pageable = (Pageable) (values[parameters.getPageableIndex()]);
@@ -75,7 +75,6 @@ public class MapperQuery extends AbstractJpaQuery {
     }
 
 
-
     private Map<String, Object> mergeParams(Object[] values) {
         JpaParameters parameters = getQueryMethod().getParameters();
         Map<String, Object> params = new HashMap<>();
@@ -83,8 +82,8 @@ public class MapperQuery extends AbstractJpaQuery {
         for (int i = 0; i < parameters.getNumberOfParameters(); i++) {
             Object value = values[i];
             Parameter parameter = parameters.getParameter(i);
-            if (value != null){
-                params.put(parameter.getName().orElse(null),value);
+            if (value != null) {
+                params.put(parameter.getName().orElse(null), value);
             }
 
 //            if (value != null && canBindParameter(parameter)) {
@@ -115,8 +114,7 @@ public class MapperQuery extends AbstractJpaQuery {
 
         if (getQueryMethod().isQueryForEntity()) {
             oriProxyQuery = getEntityManager().createNativeQuery(queryString, objectType);
-        }
-        else {
+        } else {
             //  极度麻烦的 返回类型转换
             oriProxyQuery = getEntityManager().createNativeQuery(queryString);
             query = AopTargetUtils.getTarget(oriProxyQuery);
@@ -151,6 +149,7 @@ public class MapperQuery extends AbstractJpaQuery {
 
     /**
      * 基于原始sql 的计数器
+     *
      * @param values
      * @return
      */
